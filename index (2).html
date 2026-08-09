@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toolbench — Everyday Calculators & Converters</title>
+<meta name="description" content="Fast, free calculators and converters: unit conversion, percentages, BMI, loan EMI, and age.">
+
+<!-- =========================================================
+     ADSENSE SETUP — READ ME
+     1. Paste your AdSense Publisher ID below (format: ca-pub-XXXXXXXXXXXXXXXX)
+     2. Paste your 4 ad slot IDs (create these in your AdSense dashboard
+        under Ads > By ad unit > Display ads). One per placement.
+     3. Upload an ads.txt file to your site root with the line AdSense gives you.
+     ========================================================= -->
+<script>
+  window.ADSENSE_CONFIG = {
+    client: "ca-pub-4731702304913788",   // <-- your publisher ID
+    slots: {
+      header: "1111111111",              // <-- header banner slot
+      inline1: "2222222222",             // <-- between tools #1
+      inline2: "3333333333",             // <-- between tools #2
+      footer: "4444444444"                // <-- footer banner slot
+    }
+  };
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4731702304913788"
+     crossorigin="anonymous"></script>
+
+<style>
+  :root{
+    --paper: #eef2f0;
+    --paper-line: #d7ded9;
+    --ink: #1c2b26;
+    --ink-soft: #4d5c56;
+    --panel: #ffffff;
+    --accent: #d9581f;
+    --accent-soft: #f2c9ab;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+    --sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 28px,
+      var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+  }
+
+  header.site{
+    padding:48px 24px 32px;
+    max-width:960px;
+    margin:0 auto;
+    border-bottom:2px solid var(--ink);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 10px;
+  }
+  h1{
+    font-size:clamp(32px,5vw,52px);
+    margin:0 0 8px;
+    letter-spacing:-0.02em;
+    font-weight:700;
+  }
+  .site p.tag{
+    margin:0;
+    color:var(--ink-soft);
+    max-width:56ch;
+  }
+
+  nav.toolnav{
+    max-width:960px;
+    margin:24px auto 0;
+    padding:0 24px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  nav.toolnav a{
+    font-family:var(--mono);
+    font-size:13px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--panel);
+    border:1px solid var(--ink);
+    padding:6px 12px;
+    border-radius:2px;
+  }
+  nav.toolnav a:hover{ background:var(--ink); color:var(--paper); }
+
+  main{
+    max-width:960px;
+    margin:32px auto 80px;
+    padding:0 24px;
+    display:grid;
+    gap:28px;
+  }
+
+  .tool{
+    background:var(--panel);
+    border:1px solid var(--ink);
+    border-radius:2px;
+    padding:24px;
+    position:relative;
+  }
+  .tool::before{
+    content: attr(data-index);
+    position:absolute;
+    top:-12px;
+    left:20px;
+    background:var(--accent);
+    color:#fff;
+    font-family:var(--mono);
+    font-size:11px;
+    padding:2px 8px;
+    letter-spacing:.05em;
+  }
+  .tool h2{
+    margin:8px 0 4px;
+    font-size:20px;
+  }
+  .tool p.desc{
+    margin:0 0 18px;
+    color:var(--ink-soft);
+    font-size:14px;
+  }
+  .row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:flex-end;
+    margin-bottom:14px;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex:1 1 160px;
+  }
+  .field label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--ink-soft);
+  }
+  .field input, .field select{
+    font-family:var(--mono);
+    font-size:15px;
+    padding:9px 10px;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .field input:focus, .field select:focus, button:focus{
+    outline:3px solid var(--accent-soft);
+    outline-offset:1px;
+  }
+  button.run{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:10px 18px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  button.run:hover{ background:var(--accent); }
+
+  .readout{
+    margin-top:16px;
+    border-top:1px dashed var(--ink-soft);
+    padding-top:14px;
+    font-family:var(--mono);
+    font-size:15px;
+    min-height:22px;
+  }
+  .readout .big{ font-size:28px; font-weight:600; color:var(--accent); }
+  .readout .label{ color:var(--ink-soft); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+
+  /* Ad slots */
+  .ad-slot{
+    max-width:960px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .ad-slot .frame{
+    border:1px dashed var(--ink-soft);
+    padding:8px;
+    text-align:center;
+  }
+  .ad-slot .frame span{
+    display:block;
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:6px;
+  }
+
+  footer.site{
+    max-width:960px;
+    margin:0 auto 48px;
+    padding:24px;
+    border-top:2px solid var(--ink);
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  @media (max-width:600px){
+    header.site{padding:32px 18px 24px;}
+    main{padding:0 18px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <p class="eyebrow">Free · No sign-up · Runs in your browser</p>
+  <h1>Toolbench</h1>
+  <p class="tag">A small set of calculators and converters that do exactly one job each, fast.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="#unit">Unit converter</a>
+  <a href="#percent">Percentage</a>
+  <a href="#bmi">BMI</a>
+  <a href="#loan">Loan EMI</a>
+  <a href="#age">Age</a>
+</nav>
+
+<!-- HEADER AD -->
+<div class="ad-slot">
+  <div class="frame">
+    <span>Advertisement</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client=""
+      data-ad-slot=""
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
+<main>
+
+  <section class="tool" id="unit" data-index="01">
+    <h2>Unit converter</h2>
+    <p class="desc">Length and weight, both directions.</p>
+    <div class="row">
+      <div class="field">
+        <label for="u-value">Value</label>
+        <input id="u-value" type="number" value="1">
+      </div>
+      <div class="field">
+        <label for="u-type">Conversion</label>
+        <select id="u-type">
+          <option value="km-mi">Kilometers → Miles</option>
+          <option value="mi-km">Miles → Kilometers</option>
+          <option value="kg-lb">Kilograms → Pounds</option>
+          <option value="lb-kg">Pounds → Kilograms</option>
+          <option value="c-f">Celsius → Fahrenheit</option>
+          <option value="f-c">Fahrenheit → Celsius</option>
+        </select>
+      </div>
+      <button class="run" onclick="runUnit()">Convert</button>
+    </div>
+    <div class="readout" id="u-out"></div>
+  </section>
+
+  <section class="tool" id="percent" data-index="02">
+    <h2>Percentage calculator</h2>
+    <p class="desc">What is X% of Y — and what percent is X of Y.</p>
+    <div class="row">
+      <div class="field">
+        <label for="p-x">X (%)</label>
+        <input id="p-x" type="number" value="15">
+      </div>
+      <div class="field">
+        <label for="p-y">Of value Y</label>
+        <input id="p-y" type="number" value="200">
+      </div>
+      <button class="run" onclick="runPercent()">Calculate</button>
+    </div>
+    <div class="readout" id="p-out"></div>
+  </section>
+
+  <!-- INLINE AD 1 -->
+  <div class="ad-slot">
+    <div class="frame">
+      <span>Advertisement</span>
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client=""
+        data-ad-slot=""
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    </div>
+  </div>
+
+  <section class="tool" id="bmi" data-index="03">
+    <h2>BMI calculator</h2>
+    <p class="desc">Body mass index from height and weight.</p>
+    <div class="row">
+      <div class="field">
+        <label for="b-h">Height (cm)</label>
+        <input id="b-h" type="number" value="170">
+      </div>
+      <div class="field">
+        <label for="b-w">Weight (kg)</label>
+        <input id="b-w" type="number" value="65">
+      </div>
+      <button class="run" onclick="runBMI()">Calculate</button>
+    </div>
+    <div class="readout" id="b-out"></div>
+  </section>
+
+  <section class="tool" id="loan" data-index="04">
+    <h2>Loan / EMI calculator</h2>
+    <p class="desc">Monthly payment for a fixed-rate loan.</p>
+    <div class="row">
+      <div class="field">
+        <label for="l-p">Principal</label>
+        <input id="l-p" type="number" value="10000">
+      </div>
+      <div class="field">
+        <label for="l-r">Annual rate (%)</label>
+        <input id="l-r" type="number" value="6">
+      </div>
+      <div class="field">
+        <label for="l-n">Term (months)</label>
+        <input id="l-n" type="number" value="36">
+      </div>
+      <button class="run" onclick="runLoan()">Calculate</button>
+    </div>
+    <div class="readout" id="l-out"></div>
+  </section>
+
+  <!-- INLINE AD 2 -->
+  <div class="ad-slot">
+    <div class="frame">
+      <span>Advertisement</span>
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client=""
+        data-ad-slot=""
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    </div>
+  </div>
+
+  <section class="tool" id="age" data-index="05">
+    <h2>Age calculator</h2>
+    <p class="desc">Exact age in years, months, and days from a birth date.</p>
+    <div class="row">
+      <div class="field">
+        <label for="a-d">Date of birth</label>
+        <input id="a-d" type="date">
+      </div>
+      <button class="run" onclick="runAge()">Calculate</button>
+    </div>
+    <div class="readout" id="a-out"></div>
+  </section>
+
+</main>
+
+<!-- FOOTER AD -->
+<div class="ad-slot">
+  <div class="frame">
+    <span>Advertisement</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client=""
+      data-ad-slot=""
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
+<footer class="site">
+  Toolbench — built for you. Replace this footer text with your own site name/links before publishing.
+</footer>
+
+<script>
+  // Fill in ad-client / ad-slot values from config, then request ads.
+  (function(){
+    const cfg = window.ADSENSE_CONFIG;
+    const inks = document.querySelectorAll('ins.adsbygoogle');
+    const slotOrder = [cfg.slots.header, cfg.slots.inline1, cfg.slots.inline2, cfg.slots.footer];
+    inks.forEach((el, i) => {
+      el.setAttribute('data-ad-client', cfg.client);
+      el.setAttribute('data-ad-slot', slotOrder[i] || cfg.slots.header);
+    });
+    inks.forEach(() => {
+      try { (window.adsbygoogle = window.adsbygoogle || []).push({}); }
+      catch(e){ /* ignore in local preview, no network */ }
+    });
+  })();
+
+  function runUnit(){
+    const v = parseFloat(document.getElementById('u-value').value) || 0;
+    const t = document.getElementById('u-type').value;
+    let out, label;
+    switch(t){
+      case 'km-mi': out = v * 0.621371; label = 'miles'; break;
+      case 'mi-km': out = v * 1.60934; label = 'kilometers'; break;
+      case 'kg-lb': out = v * 2.20462; label = 'pounds'; break;
+      case 'lb-kg': out = v * 0.453592; label = 'kilograms'; break;
+      case 'c-f': out = v * 9/5 + 32; label = '°F'; break;
+      case 'f-c': out = (v - 32) * 5/9; label = '°C'; break;
+    }
+    document.getElementById('u-out').innerHTML =
+      `<span class="label">Result</span><br><span class="big">${out.toFixed(2)}</span> ${label}`;
+  }
+
+  function runPercent(){
+    const x = parseFloat(document.getElementById('p-x').value) || 0;
+    const y = parseFloat(document.getElementById('p-y').value) || 0;
+    const result = (x/100) * y;
+    const reverse = y !== 0 ? (x/y*100) : 0;
+    document.getElementById('p-out').innerHTML =
+      `<span class="label">${x}% of ${y}</span><br><span class="big">${result.toFixed(2)}</span>`+
+      `<br><br><span class="label">${x} as a percent of ${y}</span><br><span class="big">${reverse.toFixed(2)}%</span>`;
+  }
+
+  function runBMI(){
+    const h = (parseFloat(document.getElementById('b-h').value) || 0) / 100;
+    const w = parseFloat(document.getElementById('b-w').value) || 0;
+    const bmi = h > 0 ? w / (h*h) : 0;
+    let category = 'Underweight';
+    if (bmi >= 18.5 && bmi < 25) category = 'Normal';
+    else if (bmi >= 25 && bmi < 30) category = 'Overweight';
+    else if (bmi >= 30) category = 'Obese';
+    document.getElementById('b-out').innerHTML =
+      `<span class="label">BMI</span><br><span class="big">${bmi.toFixed(1)}</span> — ${category}`;
+  }
+
+  function runLoan(){
+    const p = parseFloat(document.getElementById('l-p').value) || 0;
+    const rAnnual = parseFloat(document.getElementById('l-r').value) || 0;
+    const n = parseFloat(document.getElementById('l-n').value) || 1;
+    const r = rAnnual / 100 / 12;
+    let emi;
+    if (r === 0) emi = p / n;
+    else emi = p * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
+    const total = emi * n;
+    const interest = total - p;
+    document.getElementById('l-out').innerHTML =
+      `<span class="label">Monthly payment</span><br><span class="big">${emi.toFixed(2)}</span>`+
+      `<br><br><span class="label">Total interest</span><br>${interest.toFixed(2)}`+
+      `<br><span class="label">Total repaid</span><br>${total.toFixed(2)}`;
+  }
+
+  function runAge(){
+    const dob = document.getElementById('a-d').value;
+    if(!dob){ document.getElementById('a-out').innerHTML = 'Pick a date first.'; return; }
+    const birth = new Date(dob);
+    const now = new Date();
+    let years = now.getFullYear() - birth.getFullYear();
+    let months = now.getMonth() - birth.getMonth();
+    let days = now.getDate() - birth.getDate();
+    if (days < 0){
+      months -= 1;
+      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      days += prevMonth;
+    }
+    if (months < 0){ years -= 1; months += 12; }
+    document.getElementById('a-out').innerHTML =
+      `<span class="label">Current age</span><br><span class="big">${years}y ${months}m ${days}d</span>`;
+  }
+</script>
+
+</body>
+</html>
