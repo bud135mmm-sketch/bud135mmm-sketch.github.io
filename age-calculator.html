@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Age Calculator — Exact Age in Years, Months, Days | Toolbench</title>
+<meta name="description" content="Calculate exact age in years, months, and days from any birth date.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>Age calculator</h1>
+  <p class="tag">Exact age in years, months, and days from a birth date — more precise than a quick subtraction.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html">Unit converter</a>
+  <a href="percentage-calculator.html">Percentage</a>
+  <a href="bmi-calculator.html">BMI</a>
+  <a href="loan-emi-calculator.html">Loan EMI</a>
+  <a href="compound-interest-calculator.html">Compound interest</a>
+  <a href="discount-calculator.html">Discount</a>
+  <a href="age-calculator.html" class="current">Age</a>
+  <a href="gpa-calculator.html">GPA</a>
+  <a href="word-counter.html">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="a-d">Date of birth</label>
+        <input id="a-d" type="date">
+      </div>
+      <button class="run" onclick="runAge()">Calculate</button>
+    </div>
+    <div class="readout" id="a-out"></div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>Why "just subtract the years" isn't quite right</h2>
+      <p>
+        Subtracting birth year from the current year gets close, but it's
+        wrong for anyone whose birthday hasn't happened yet this calendar
+        year — someone born in November is still a year "younger" than that
+        simple subtraction suggests until their birthday actually arrives.
+        This tool checks the full date, not just the year, so it correctly
+        accounts for whether this year's birthday has passed and how many
+        days sit between the months in between.
+      </p>
+      <h2>Where this is actually useful</h2>
+      <p style="margin-bottom:0;">
+        Beyond settling casual arguments, exact age calculations matter for
+        eligibility cutoffs (school enrollment, age-restricted services,
+        insurance brackets), form fields that want a precise figure rather
+        than "about 30," and any situation where the exact number of days
+        since a date matters — anniversaries, milestones, or countdowns to
+        an age-based deadline.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  function runAge(){
+    const dob = document.getElementById('a-d').value;
+    if(!dob){ document.getElementById('a-out').innerHTML = 'Pick a date first.'; return; }
+    const birth = new Date(dob);
+    const now = new Date();
+    let years = now.getFullYear() - birth.getFullYear();
+    let months = now.getMonth() - birth.getMonth();
+    let days = now.getDate() - birth.getDate();
+    if (days < 0){
+      months -= 1;
+      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      days += prevMonth;
+    }
+    if (months < 0){ years -= 1; months += 12; }
+    document.getElementById('a-out').innerHTML =
+      `<span class="label">Current age</span><br><span class="big">${years}y ${months}m ${days}d</span>`;
+  }
+</script>
+</body>
+</html>

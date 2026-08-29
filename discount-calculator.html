@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discount Calculator — Sale Price &amp; Savings | Toolbench</title>
+<meta name="description" content="Calculate the final price after a percentage discount, and exactly how much you save.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>Discount &amp; sale price calculator</h1>
+  <p class="tag">The final price after a percentage-off discount, and exactly how much you save.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html">Unit converter</a>
+  <a href="percentage-calculator.html">Percentage</a>
+  <a href="bmi-calculator.html">BMI</a>
+  <a href="loan-emi-calculator.html">Loan EMI</a>
+  <a href="compound-interest-calculator.html">Compound interest</a>
+  <a href="discount-calculator.html" class="current">Discount</a>
+  <a href="age-calculator.html">Age</a>
+  <a href="gpa-calculator.html">GPA</a>
+  <a href="word-counter.html">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="d-price">Original price</label>
+        <input id="d-price" type="number" value="80">
+      </div>
+      <div class="field">
+        <label for="d-pct">Discount (%)</label>
+        <input id="d-pct" type="number" value="25">
+      </div>
+      <div class="field">
+        <label for="d-extra">Extra discount, optional (%)</label>
+        <input id="d-extra" type="number" value="0">
+      </div>
+      <button class="run" onclick="runDiscount()">Calculate</button>
+    </div>
+    <div class="readout" id="d-out"></div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>Why stacked discounts aren't just added together</h2>
+      <p>
+        A common mistake during sales season: seeing "25% off" and then an
+        extra "10% off" and assuming that's 35% off the original price. It
+        isn't — the second discount applies to the already-reduced price,
+        not the original, so two stacked discounts are always slightly less
+        generous than their sum suggests. This calculator handles that
+        correctly if you enter a second, stacked discount.
+      </p>
+      <h2>The math</h2>
+      <table>
+        <tr><th>Step</th><th>Formula</th></tr>
+        <tr><td>Price after first discount</td><td>original × (1 − discount₁ ÷ 100)</td></tr>
+        <tr><td>Price after second discount</td><td>previous price × (1 − discount₂ ÷ 100)</td></tr>
+      </table>
+      <p style="margin-bottom:0;">
+        For example: a $100 item with 25% off drops to $75. A further 10%
+        off that $75 (not the original $100) brings it to $67.50 — a
+        combined discount of 32.5%, not 35%. The gap grows with bigger
+        percentages, which is worth knowing before assuming a "50% + 20%"
+        sign means 70% off.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  function runDiscount(){
+    const price = parseFloat(document.getElementById('d-price').value) || 0;
+    const pct = parseFloat(document.getElementById('d-pct').value) || 0;
+    const extra = parseFloat(document.getElementById('d-extra').value) || 0;
+    let final = price * (1 - pct/100);
+    if (extra > 0) final = final * (1 - extra/100);
+    const saved = price - final;
+    const effectivePct = price !== 0 ? (saved/price*100) : 0;
+    document.getElementById('d-out').innerHTML =
+      `<span class="label">Final price</span><br><span class="big">${final.toFixed(2)}</span>`+
+      `<br><br><span class="label">You save</span><br>${saved.toFixed(2)} (${effectivePct.toFixed(1)}% overall)`;
+  }
+</script>
+</body>
+</html>

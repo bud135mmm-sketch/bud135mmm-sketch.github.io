@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI Calculator — Body Mass Index | Toolbench</title>
+<meta name="description" content="Calculate your body mass index from height and weight, with category ranges explained.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>BMI calculator</h1>
+  <p class="tag">Body mass index from height and weight, with the standard category ranges.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html">Unit converter</a>
+  <a href="percentage-calculator.html">Percentage</a>
+  <a href="bmi-calculator.html" class="current">BMI</a>
+  <a href="loan-emi-calculator.html">Loan EMI</a>
+  <a href="compound-interest-calculator.html">Compound interest</a>
+  <a href="discount-calculator.html">Discount</a>
+  <a href="age-calculator.html">Age</a>
+  <a href="gpa-calculator.html">GPA</a>
+  <a href="word-counter.html">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="b-h">Height (cm)</label>
+        <input id="b-h" type="number" value="170">
+      </div>
+      <div class="field">
+        <label for="b-w">Weight (kg)</label>
+        <input id="b-w" type="number" value="65">
+      </div>
+      <button class="run" onclick="runBMI()">Calculate</button>
+    </div>
+    <div class="readout" id="b-out"></div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>What BMI actually measures</h2>
+      <p>
+        Body mass index is a simple ratio of weight to height, originally
+        developed in the 1830s as a population-level statistic rather than
+        an individual health diagnosis. It's still widely used today as a
+        quick screening tool because it's cheap and easy to calculate, not
+        because it's the most accurate measure of an individual's health.
+      </p>
+      <h2>The formula</h2>
+      <p>BMI = weight (kg) ÷ height (m)²</p>
+      <h2>Standard categories</h2>
+      <table>
+        <tr><th>BMI range</th><th>Category</th></tr>
+        <tr><td>Below 18.5</td><td>Underweight</td></tr>
+        <tr><td>18.5 – 24.9</td><td>Normal weight</td></tr>
+        <tr><td>25.0 – 29.9</td><td>Overweight</td></tr>
+        <tr><td>30.0 and above</td><td>Obese</td></tr>
+      </table>
+      <h2>Why it's a starting point, not a verdict</h2>
+      <p style="margin-bottom:0;">
+        BMI doesn't distinguish between muscle and fat, doesn't account for
+        where fat is distributed, and uses the same thresholds regardless of
+        age, sex, or ethnicity — all of which affect what a "healthy" weight
+        actually looks like for a given person. It's a reasonable first
+        signal, particularly at a population level, but a single number
+        outside the "normal" range isn't a diagnosis on its own. Athletes
+        with high muscle mass, older adults, and pregnant people are common
+        cases where BMI reads misleadingly. If your number is a concern,
+        a doctor can weigh it against your actual body composition and
+        health history.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  function runBMI(){
+    const h = (parseFloat(document.getElementById('b-h').value) || 0) / 100;
+    const w = parseFloat(document.getElementById('b-w').value) || 0;
+    const bmi = h > 0 ? w / (h*h) : 0;
+    let category = 'Underweight';
+    if (bmi >= 18.5 && bmi < 25) category = 'Normal weight';
+    else if (bmi >= 25 && bmi < 30) category = 'Overweight';
+    else if (bmi >= 30) category = 'Obese';
+    document.getElementById('b-out').innerHTML =
+      `<span class="label">BMI</span><br><span class="big">${bmi.toFixed(1)}</span> — ${category}`;
+  }
+</script>
+</body>
+</html>

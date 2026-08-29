@@ -3,413 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toolbench — Everyday Calculators & Converters</title>
-<meta name="description" content="Fast, free calculators and converters: unit conversion, percentages, BMI, loan EMI, and age.">
+<title>Toolbench — Free calculators, converters &amp; everyday tools</title>
+<meta name="description" content="Free browser-based calculators and converters: unit conversion, percentage, BMI, loan EMI, compound interest, age, word counter, password generator, discount, and GPA.">
+<link rel="stylesheet" href="styles.css">
 
-<!-- =========================================================
-     ADSENSE SETUP — READ ME
-     1. Paste your AdSense Publisher ID below (format: ca-pub-XXXXXXXXXXXXXXXX)
-     2. Paste your 4 ad slot IDs (create these in your AdSense dashboard
-        under Ads > By ad unit > Display ads). One per placement.
-     3. Upload an ads.txt file to your site root with the line AdSense gives you.
-     ========================================================= -->
 <script>
   window.ADSENSE_CONFIG = {
-    client: "ca-pub-4731702304913788",   // <-- your publisher ID
-    slots: {
-      header: "1111111111",              // <-- header banner slot
-      inline1: "2222222222",             // <-- between tools #1
-      inline2: "3333333333",             // <-- between tools #2
-      footer: "4444444444"                // <-- footer banner slot
-    }
+    client: "ca-pub-4731702304913788",
+    slots: { header: "", inline1: "", inline2: "", footer: "" }
   };
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4731702304913788"
      crossorigin="anonymous"></script>
-
-<style>
-  :root{
-    --paper: #eef2f0;
-    --paper-line: #d7ded9;
-    --ink: #1c2b26;
-    --ink-soft: #4d5c56;
-    --panel: #ffffff;
-    --accent: #d9581f;
-    --accent-soft: #f2c9ab;
-    --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
-    --sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
-  }
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
-
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:
-      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 28px,
-      var(--paper);
-    color:var(--ink);
-    font-family:var(--sans);
-    line-height:1.5;
-  }
-
-  header.site{
-    padding:48px 24px 32px;
-    max-width:960px;
-    margin:0 auto;
-    border-bottom:2px solid var(--ink);
-  }
-  .eyebrow{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--accent);
-    margin:0 0 10px;
-  }
-  h1{
-    font-size:clamp(32px,5vw,52px);
-    margin:0 0 8px;
-    letter-spacing:-0.02em;
-    font-weight:700;
-  }
-  .site p.tag{
-    margin:0;
-    color:var(--ink-soft);
-    max-width:56ch;
-  }
-
-  nav.toolnav{
-    max-width:960px;
-    margin:24px auto 0;
-    padding:0 24px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-  nav.toolnav a{
-    font-family:var(--mono);
-    font-size:13px;
-    text-decoration:none;
-    color:var(--ink);
-    background:var(--panel);
-    border:1px solid var(--ink);
-    padding:6px 12px;
-    border-radius:2px;
-  }
-  nav.toolnav a:hover{ background:var(--ink); color:var(--paper); }
-
-  main{
-    max-width:960px;
-    margin:32px auto 80px;
-    padding:0 24px;
-    display:grid;
-    gap:28px;
-  }
-
-  .tool{
-    background:var(--panel);
-    border:1px solid var(--ink);
-    border-radius:2px;
-    padding:24px;
-    position:relative;
-  }
-  .tool::before{
-    content: attr(data-index);
-    position:absolute;
-    top:-12px;
-    left:20px;
-    background:var(--accent);
-    color:#fff;
-    font-family:var(--mono);
-    font-size:11px;
-    padding:2px 8px;
-    letter-spacing:.05em;
-  }
-  .tool h2{
-    margin:8px 0 4px;
-    font-size:20px;
-  }
-  .tool p.desc{
-    margin:0 0 18px;
-    color:var(--ink-soft);
-    font-size:14px;
-  }
-  .row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px;
-    align-items:flex-end;
-    margin-bottom:14px;
-  }
-  .field{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    flex:1 1 160px;
-  }
-  .field label{
-    font-family:var(--mono);
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    color:var(--ink-soft);
-  }
-  .field input, .field select{
-    font-family:var(--mono);
-    font-size:15px;
-    padding:9px 10px;
-    border:1px solid var(--ink);
-    border-radius:2px;
-    background:var(--paper);
-    color:var(--ink);
-  }
-  .field input:focus, .field select:focus, button:focus{
-    outline:3px solid var(--accent-soft);
-    outline-offset:1px;
-  }
-  button.run{
-    font-family:var(--mono);
-    font-size:13px;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    background:var(--ink);
-    color:var(--paper);
-    border:none;
-    padding:10px 18px;
-    border-radius:2px;
-    cursor:pointer;
-  }
-  button.run:hover{ background:var(--accent); }
-
-  .readout{
-    margin-top:16px;
-    border-top:1px dashed var(--ink-soft);
-    padding-top:14px;
-    font-family:var(--mono);
-    font-size:15px;
-    min-height:22px;
-  }
-  .readout .big{ font-size:28px; font-weight:600; color:var(--accent); }
-  .readout .label{ color:var(--ink-soft); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
-
-  /* Ad slots */
-  .ad-slot{
-    max-width:960px;
-    margin:0 auto;
-    padding:0 24px;
-  }
-  .ad-slot .frame{
-    border:1px dashed var(--ink-soft);
-    padding:8px;
-    text-align:center;
-  }
-  .ad-slot .frame span{
-    display:block;
-    font-family:var(--mono);
-    font-size:10px;
-    color:var(--ink-soft);
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    margin-bottom:6px;
-  }
-
-  footer.site{
-    max-width:960px;
-    margin:0 auto 48px;
-    padding:24px;
-    border-top:2px solid var(--ink);
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--ink-soft);
-  }
-
-  @media (max-width:600px){
-    header.site{padding:32px 18px 24px;}
-    main{padding:0 18px;}
-  }
-</style>
 </head>
 <body>
 
 <header class="site">
   <p class="eyebrow">Free · No sign-up · Runs in your browser</p>
   <h1>Toolbench</h1>
-  <p class="tag">A small set of calculators and converters that do exactly one job each, fast.</p>
+  <p class="tag">Ten small tools that each do exactly one job, fast — calculators,
+  converters, and a couple of things every phone should have built in but doesn't.</p>
 </header>
-
-<nav class="toolnav">
-  <a href="#unit">Unit converter</a>
-  <a href="#percent">Percentage</a>
-  <a href="#bmi">BMI</a>
-  <a href="#loan">Loan EMI</a>
-  <a href="#age">Age</a>
-</nav>
 
 <main>
 
-  <section class="tool" id="unit" data-index="01">
-    <h2>Unit converter</h2>
-    <p class="desc">
-      Converts between the length and weight units people run into most often —
-      kilometers and miles, kilograms and pounds, and Celsius and Fahrenheit for
-      temperature. Useful when reading a recipe from another country, checking a
-      road sign's distance, comparing a shipping weight limit, or just double
-      checking a number someone gave you in units you don't normally use. Pick a
-      conversion from the list, type in the value, and the result updates
-      instantly — nothing is rounded behind the scenes beyond standard
-      two-decimal display.
-    </p>
-    <div class="row">
-      <div class="field">
-        <label for="u-value">Value</label>
-        <input id="u-value" type="number" value="1">
-      </div>
-      <div class="field">
-        <label for="u-type">Conversion</label>
-        <select id="u-type">
-          <option value="km-mi">Kilometers → Miles</option>
-          <option value="mi-km">Miles → Kilometers</option>
-          <option value="kg-lb">Kilograms → Pounds</option>
-          <option value="lb-kg">Pounds → Kilograms</option>
-          <option value="c-f">Celsius → Fahrenheit</option>
-          <option value="f-c">Fahrenheit → Celsius</option>
-        </select>
-      </div>
-      <button class="run" onclick="runUnit()">Convert</button>
+  <section>
+    <h2 style="font-size:19px;margin:0 0 14px;">Finance</h2>
+    <div class="tool-grid">
+      <a class="tool-card" href="loan-emi-calculator.html">
+        <span class="cat">Calculator</span>
+        <h3>Loan / EMI</h3>
+        <p>Monthly payment, total interest, and total repaid on a fixed-rate loan.</p>
+      </a>
+      <a class="tool-card" href="compound-interest-calculator.html">
+        <span class="cat">Calculator</span>
+        <h3>Compound interest</h3>
+        <p>How savings or investments grow with regular compounding.</p>
+      </a>
+      <a class="tool-card" href="discount-calculator.html">
+        <span class="cat">Calculator</span>
+        <h3>Discount &amp; sale price</h3>
+        <p>Final price after a percentage-off discount, plus the amount you save.</p>
+      </a>
+      <a class="tool-card" href="percentage-calculator.html">
+        <span class="cat">Calculator</span>
+        <h3>Percentage</h3>
+        <p>What X% of Y is, and what percent X is of Y.</p>
+      </a>
     </div>
-    <div class="readout" id="u-out"></div>
   </section>
 
-  <section class="tool" id="percent" data-index="02">
-    <h2>Percentage calculator</h2>
-    <p class="desc">
-      Answers the two percentage questions that come up constantly: what a given
-      percent of a number actually is (useful for tips, discounts, taxes, or
-      commission), and what percentage one number represents of another (useful
-      for tracking progress toward a goal, a test score, or a budget split).
-      Enter both numbers once and get both answers at the same time, rather than
-      running two separate calculations.
-    </p>
-    <div class="row">
-      <div class="field">
-        <label for="p-x">X (%)</label>
-        <input id="p-x" type="number" value="15">
-      </div>
-      <div class="field">
-        <label for="p-y">Of value Y</label>
-        <input id="p-y" type="number" value="200">
-      </div>
-      <button class="run" onclick="runPercent()">Calculate</button>
+  <section>
+    <h2 style="font-size:19px;margin:0 0 14px;">Health &amp; life</h2>
+    <div class="tool-grid">
+      <a class="tool-card" href="bmi-calculator.html">
+        <span class="cat">Calculator</span>
+        <h3>BMI</h3>
+        <p>Body mass index from height and weight, with category ranges explained.</p>
+      </a>
+      <a class="tool-card" href="age-calculator.html">
+        <span class="cat">Calculator</span>
+        <h3>Age</h3>
+        <p>Exact age in years, months, and days from any birth date.</p>
+      </a>
+      <a class="tool-card" href="gpa-calculator.html">
+        <span class="cat">Calculator</span>
+        <h3>GPA</h3>
+        <p>Grade point average from a list of course grades and credit hours.</p>
+      </a>
+      <a class="tool-card" href="unit-converter.html">
+        <span class="cat">Converter</span>
+        <h3>Unit converter</h3>
+        <p>Length, weight, and temperature — kilometers, pounds, Celsius and back.</p>
+      </a>
     </div>
-    <div class="readout" id="p-out"></div>
   </section>
 
-  <section class="tool" id="bmi" data-index="03">
-    <h2>BMI calculator</h2>
-    <p class="desc">
-      Body mass index is a simple ratio of weight to height, commonly used as a
-      rough screening tool rather than a diagnosis. Enter your height in
-      centimeters and weight in kilograms to see your BMI and which general
-      range it falls in — underweight, normal, overweight, or obese, using the
-      standard World Health Organization thresholds. BMI doesn't account for
-      muscle mass, bone density, age, or sex, so it's a starting point for a
-      conversation with a doctor, not a substitute for one — particularly for
-      athletes, older adults, or anyone with an atypical body composition.
-    </p>
-    <div class="row">
-      <div class="field">
-        <label for="b-h">Height (cm)</label>
-        <input id="b-h" type="number" value="170">
-      </div>
-      <div class="field">
-        <label for="b-w">Weight (kg)</label>
-        <input id="b-w" type="number" value="65">
-      </div>
-      <button class="run" onclick="runBMI()">Calculate</button>
+  <section>
+    <h2 style="font-size:19px;margin:0 0 14px;">Text &amp; security</h2>
+    <div class="tool-grid">
+      <a class="tool-card" href="word-counter.html">
+        <span class="cat">Tool</span>
+        <h3>Word &amp; character counter</h3>
+        <p>Live word, character, and reading-time count as you write or paste.</p>
+      </a>
+      <a class="tool-card" href="password-generator.html">
+        <span class="cat">Tool</span>
+        <h3>Password generator</h3>
+        <p>Random, strong passwords generated entirely on your device.</p>
+      </a>
     </div>
-    <div class="readout" id="b-out"></div>
   </section>
 
-  <section class="tool" id="loan" data-index="04">
-    <h2>Loan / EMI calculator</h2>
-    <p class="desc">
-      Estimates the fixed monthly payment (EMI, equated monthly installment) for
-      a loan with a set interest rate and term — the same math banks use for
-      mortgages, car loans, and personal loans. Enter the amount you're
-      borrowing, the annual interest rate, and the repayment period in months to
-      see your monthly payment, the total interest you'd pay over the life of
-      the loan, and the total amount repaid. It's a useful way to compare offers
-      from different lenders or see how shortening the term changes the total
-      interest cost — though your actual bank statement may differ slightly
-      depending on how they compound interest or apply fees.
-    </p>
-    <div class="row">
-      <div class="field">
-        <label for="l-p">Principal</label>
-        <input id="l-p" type="number" value="10000">
-      </div>
-      <div class="field">
-        <label for="l-r">Annual rate (%)</label>
-        <input id="l-r" type="number" value="6">
-      </div>
-      <div class="field">
-        <label for="l-n">Term (months)</label>
-        <input id="l-n" type="number" value="36">
-      </div>
-      <button class="run" onclick="runLoan()">Calculate</button>
-    </div>
-    <div class="readout" id="l-out"></div>
-  </section>
-
-  <section class="tool" id="age" data-index="05">
-    <h2>Age calculator</h2>
-    <p class="desc">
-      Works out someone's exact current age in years, months, and days from a
-      birth date — more precise than just subtracting years, since it correctly
-      accounts for whether this year's birthday has already passed and how many
-      days are in the months in between. Handy for form fields that want an
-      exact age, checking eligibility cutoffs, or just settling an argument
-      about how old someone actually is today.
-    </p>
-    <div class="row">
-      <div class="field">
-        <label for="a-d">Date of birth</label>
-        <input id="a-d" type="date">
-      </div>
-      <button class="run" onclick="runAge()">Calculate</button>
-    </div>
-    <div class="readout" id="a-out"></div>
-  </section>
-
-  <section class="tool" id="about" data-index="06">
-    <h2>About Toolbench</h2>
-    <p class="desc">
-      Toolbench is a small collection of everyday calculators and unit
-      converters, built to answer one quick question at a time — no sign-up, no
-      app to install, nothing saved about you. Every calculation on this page
-      runs directly in your browser: none of the numbers you type are sent
-      anywhere or stored on a server, and none of the tools require an internet
-      connection once the page has loaded. That also means results are
-      instantaneous — there's no round trip to a server waiting on a network
-      request.
-    </p>
-    <p class="desc">
-      The tools here were chosen because they're the kind of thing people
-      search for constantly but rarely find in a clean, ad-free, fast-loading
-      form: converting a measurement from a recipe or a road sign, checking a
-      discount or a tip, working out a rough BMI, comparing loan offers, or
-      figuring out someone's exact age. More tools get added over time based on
-      what's genuinely useful day to day, and existing ones get refined as
-      feedback comes in.
-    </p>
-    <p class="desc" style="margin-bottom:0;">
-      Have a tool you wish existed here, or spot something that gave you a
-      wrong answer? Feedback is always welcome — this is a work in progress,
-      built to get more useful over time. See the
-      <a href="privacy.html" style="color:var(--accent);">privacy policy</a>
-      for details on what information (if any) this site collects.
-    </p>
+  <section class="panel">
+    <article>
+      <h2>About Toolbench</h2>
+      <p>
+        Toolbench is a small set of everyday calculators, converters, and
+        utilities, each built to answer one specific question well rather than
+        trying to be an all-in-one dashboard. Every tool runs entirely in your
+        browser — nothing you type is sent to a server, logged, or stored,
+        which also means every result appears instantly with no network delay.
+      </p>
+      <p>
+        The tools were picked because they're searched for constantly but
+        rarely found in a fast, clean, distraction-free form: working out a
+        loan payment before signing anything, checking how compound interest
+        actually grows a savings account, converting a recipe's measurements,
+        or generating a password that isn't "password123." Each tool has its
+        own page with a short guide explaining the concept behind it, not just
+        the calculator itself.
+      </p>
+      <p style="margin-bottom:0;">
+        Feedback on any tool, or requests for new ones, are always welcome.
+        See the <a href="privacy.html">privacy policy</a> for details on what
+        information this site collects (in short: none).
+      </p>
+    </article>
   </section>
 
 </main>
@@ -417,83 +127,6 @@
 <footer class="site">
   Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
 </footer>
-
-<script>
-  // Ad placements are added back in once the site is approved by AdSense.
-  // See ADSENSE_CONFIG in <head> for the publisher ID already in place.
-
-  function runUnit(){
-    const v = parseFloat(document.getElementById('u-value').value) || 0;
-    const t = document.getElementById('u-type').value;
-    let out, label;
-    switch(t){
-      case 'km-mi': out = v * 0.621371; label = 'miles'; break;
-      case 'mi-km': out = v * 1.60934; label = 'kilometers'; break;
-      case 'kg-lb': out = v * 2.20462; label = 'pounds'; break;
-      case 'lb-kg': out = v * 0.453592; label = 'kilograms'; break;
-      case 'c-f': out = v * 9/5 + 32; label = '°F'; break;
-      case 'f-c': out = (v - 32) * 5/9; label = '°C'; break;
-    }
-    document.getElementById('u-out').innerHTML =
-      `<span class="label">Result</span><br><span class="big">${out.toFixed(2)}</span> ${label}`;
-  }
-
-  function runPercent(){
-    const x = parseFloat(document.getElementById('p-x').value) || 0;
-    const y = parseFloat(document.getElementById('p-y').value) || 0;
-    const result = (x/100) * y;
-    const reverse = y !== 0 ? (x/y*100) : 0;
-    document.getElementById('p-out').innerHTML =
-      `<span class="label">${x}% of ${y}</span><br><span class="big">${result.toFixed(2)}</span>`+
-      `<br><br><span class="label">${x} as a percent of ${y}</span><br><span class="big">${reverse.toFixed(2)}%</span>`;
-  }
-
-  function runBMI(){
-    const h = (parseFloat(document.getElementById('b-h').value) || 0) / 100;
-    const w = parseFloat(document.getElementById('b-w').value) || 0;
-    const bmi = h > 0 ? w / (h*h) : 0;
-    let category = 'Underweight';
-    if (bmi >= 18.5 && bmi < 25) category = 'Normal';
-    else if (bmi >= 25 && bmi < 30) category = 'Overweight';
-    else if (bmi >= 30) category = 'Obese';
-    document.getElementById('b-out').innerHTML =
-      `<span class="label">BMI</span><br><span class="big">${bmi.toFixed(1)}</span> — ${category}`;
-  }
-
-  function runLoan(){
-    const p = parseFloat(document.getElementById('l-p').value) || 0;
-    const rAnnual = parseFloat(document.getElementById('l-r').value) || 0;
-    const n = parseFloat(document.getElementById('l-n').value) || 1;
-    const r = rAnnual / 100 / 12;
-    let emi;
-    if (r === 0) emi = p / n;
-    else emi = p * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
-    const total = emi * n;
-    const interest = total - p;
-    document.getElementById('l-out').innerHTML =
-      `<span class="label">Monthly payment</span><br><span class="big">${emi.toFixed(2)}</span>`+
-      `<br><br><span class="label">Total interest</span><br>${interest.toFixed(2)}`+
-      `<br><span class="label">Total repaid</span><br>${total.toFixed(2)}`;
-  }
-
-  function runAge(){
-    const dob = document.getElementById('a-d').value;
-    if(!dob){ document.getElementById('a-out').innerHTML = 'Pick a date first.'; return; }
-    const birth = new Date(dob);
-    const now = new Date();
-    let years = now.getFullYear() - birth.getFullYear();
-    let months = now.getMonth() - birth.getMonth();
-    let days = now.getDate() - birth.getDate();
-    if (days < 0){
-      months -= 1;
-      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-      days += prevMonth;
-    }
-    if (months < 0){ years -= 1; months += 12; }
-    document.getElementById('a-out').innerHTML =
-      `<span class="label">Current age</span><br><span class="big">${years}y ${months}m ${days}d</span>`;
-  }
-</script>
 
 </body>
 </html>

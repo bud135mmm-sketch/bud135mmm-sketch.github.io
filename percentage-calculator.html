@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percentage Calculator — What is X% of Y? | Toolbench</title>
+<meta name="description" content="Calculate what X percent of Y is, and what percent X is of Y, instantly.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>Percentage calculator</h1>
+  <p class="tag">Two of the most common percentage questions, answered at once.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html">Unit converter</a>
+  <a href="percentage-calculator.html" class="current">Percentage</a>
+  <a href="bmi-calculator.html">BMI</a>
+  <a href="loan-emi-calculator.html">Loan EMI</a>
+  <a href="compound-interest-calculator.html">Compound interest</a>
+  <a href="discount-calculator.html">Discount</a>
+  <a href="age-calculator.html">Age</a>
+  <a href="gpa-calculator.html">GPA</a>
+  <a href="word-counter.html">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="p-x">X (%)</label>
+        <input id="p-x" type="number" value="15">
+      </div>
+      <div class="field">
+        <label for="p-y">Of value Y</label>
+        <input id="p-y" type="number" value="200">
+      </div>
+      <button class="run" onclick="runPercent()">Calculate</button>
+    </div>
+    <div class="readout" id="p-out"></div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>Two questions, one calculator</h2>
+      <p>
+        "What is 15% of 200?" and "What percent of 200 is 15?" look similar
+        but ask different things, and mixing them up is one of the most
+        common small math mistakes people make — whether working out a tip,
+        a sales tax, a discount, or how close you are to a savings goal.
+        This tool answers both from the same two numbers, so you don't need
+        to remember which formula goes which way.
+      </p>
+      <h2>The math behind it</h2>
+      <table>
+        <tr><th>Question</th><th>Formula</th></tr>
+        <tr><td>What is X% of Y?</td><td>(X ÷ 100) × Y</td></tr>
+        <tr><td>X is what percent of Y?</td><td>(X ÷ Y) × 100</td></tr>
+      </table>
+      <p style="margin-bottom:0;">
+        A common real-world use: a $200 jacket with a 15% discount saves
+        $30, bringing the price to $170 — that's the first formula. If
+        instead you saved $30 and want to know what percentage that was of
+        the original $200 price, that's the second formula, and it comes
+        out to the same 15%.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  function runPercent(){
+    const x = parseFloat(document.getElementById('p-x').value) || 0;
+    const y = parseFloat(document.getElementById('p-y').value) || 0;
+    const result = (x/100) * y;
+    const reverse = y !== 0 ? (x/y*100) : 0;
+    document.getElementById('p-out').innerHTML =
+      `<span class="label">${x}% of ${y}</span><br><span class="big">${result.toFixed(2)}</span>`+
+      `<br><br><span class="label">${x} as a percent of ${y}</span><br><span class="big">${reverse.toFixed(2)}%</span>`;
+  }
+</script>
+</body>
+</html>

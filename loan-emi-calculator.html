@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan / EMI Calculator — Monthly Payment | Toolbench</title>
+<meta name="description" content="Calculate the monthly payment, total interest, and total repayment for a fixed-rate loan.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>Loan / EMI calculator</h1>
+  <p class="tag">Monthly payment, total interest, and total repaid on a fixed-rate loan.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html">Unit converter</a>
+  <a href="percentage-calculator.html">Percentage</a>
+  <a href="bmi-calculator.html">BMI</a>
+  <a href="loan-emi-calculator.html" class="current">Loan EMI</a>
+  <a href="compound-interest-calculator.html">Compound interest</a>
+  <a href="discount-calculator.html">Discount</a>
+  <a href="age-calculator.html">Age</a>
+  <a href="gpa-calculator.html">GPA</a>
+  <a href="word-counter.html">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="l-p">Principal</label>
+        <input id="l-p" type="number" value="10000">
+      </div>
+      <div class="field">
+        <label for="l-r">Annual rate (%)</label>
+        <input id="l-r" type="number" value="6">
+      </div>
+      <div class="field">
+        <label for="l-n">Term (months)</label>
+        <input id="l-n" type="number" value="36">
+      </div>
+      <button class="run" onclick="runLoan()">Calculate</button>
+    </div>
+    <div class="readout" id="l-out"></div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>What EMI means</h2>
+      <p>
+        EMI stands for "equated monthly installment" — the fixed amount you
+        pay every month toward a loan so that, by the end of the agreed
+        term, both the amount borrowed (principal) and all the interest are
+        fully paid off. It's the same underlying math banks use for
+        mortgages, car loans, and personal loans, even though EMI as a term
+        is used more in some regions than others.
+      </p>
+      <h2>The formula</h2>
+      <p>EMI = P × r × (1+r)ⁿ ÷ [(1+r)ⁿ − 1]</p>
+      <p>
+        Where P is the principal, r is the monthly interest rate (annual
+        rate ÷ 12 ÷ 100), and n is the number of monthly installments.
+      </p>
+      <h2>What changes your monthly payment most</h2>
+      <p>
+        Of the three inputs, the loan term usually has the biggest effect on
+        your monthly payment — stretching a loan from 24 to 60 months can
+        cut the monthly amount substantially, but it also means paying
+        interest for longer, which increases the total interest paid over
+        the life of the loan even though each individual payment is smaller.
+        A higher interest rate compounds this further, since more of each
+        early payment goes toward interest rather than principal.
+      </p>
+      <p style="margin-bottom:0;">
+        This calculator assumes a standard fixed-rate, fully amortizing
+        loan with monthly compounding. Your actual bank statement may differ
+        slightly depending on how they round, apply fees, or handle the
+        first partial month — always confirm the exact figure with your
+        lender before signing anything.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  function runLoan(){
+    const p = parseFloat(document.getElementById('l-p').value) || 0;
+    const rAnnual = parseFloat(document.getElementById('l-r').value) || 0;
+    const n = parseFloat(document.getElementById('l-n').value) || 1;
+    const r = rAnnual / 100 / 12;
+    let emi;
+    if (r === 0) emi = p / n;
+    else emi = p * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
+    const total = emi * n;
+    const interest = total - p;
+    document.getElementById('l-out').innerHTML =
+      `<span class="label">Monthly payment</span><br><span class="big">${emi.toFixed(2)}</span>`+
+      `<br><br><span class="label">Total interest</span><br>${interest.toFixed(2)}`+
+      `<br><span class="label">Total repaid</span><br>${total.toFixed(2)}`;
+  }
+</script>
+</body>
+</html>

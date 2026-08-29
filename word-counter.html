@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word &amp; Character Counter | Toolbench</title>
+<meta name="description" content="Count words, characters, sentences, and estimated reading time as you type or paste text.">
+<link rel="stylesheet" href="styles.css">
+<style>
+  textarea#w-text{
+    width:100%; min-height:220px; font-family:var(--sans); font-size:15px;
+    padding:14px; border:1px solid var(--ink); border-radius:2px;
+    background:var(--paper); color:var(--ink); resize:vertical;
+  }
+  .stat-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:12px; margin-top:16px;
+  }
+  .stat{ text-align:center; }
+  .stat .num{ font-family:var(--mono); font-size:26px; font-weight:600; color:var(--accent); }
+  .stat .lbl{ font-family:var(--mono); font-size:11px; text-transform:uppercase; color:var(--ink-soft); letter-spacing:.05em; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>Word &amp; character counter</h1>
+  <p class="tag">Live counts as you type or paste — words, characters, sentences, and estimated reading time.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html">Unit converter</a>
+  <a href="percentage-calculator.html">Percentage</a>
+  <a href="bmi-calculator.html">BMI</a>
+  <a href="loan-emi-calculator.html">Loan EMI</a>
+  <a href="compound-interest-calculator.html">Compound interest</a>
+  <a href="discount-calculator.html">Discount</a>
+  <a href="age-calculator.html">Age</a>
+  <a href="gpa-calculator.html">GPA</a>
+  <a href="word-counter.html" class="current">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <textarea id="w-text" placeholder="Type or paste your text here..." oninput="updateCounts()"></textarea>
+    <div class="stat-grid">
+      <div class="stat"><div class="num" id="w-words">0</div><div class="lbl">Words</div></div>
+      <div class="stat"><div class="num" id="w-chars">0</div><div class="lbl">Characters</div></div>
+      <div class="stat"><div class="num" id="w-chars-ns">0</div><div class="lbl">Chars (no spaces)</div></div>
+      <div class="stat"><div class="num" id="w-sentences">0</div><div class="lbl">Sentences</div></div>
+      <div class="stat"><div class="num" id="w-paragraphs">0</div><div class="lbl">Paragraphs</div></div>
+      <div class="stat"><div class="num" id="w-time">0s</div><div class="lbl">Reading time</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>Why word count matters more than people expect</h2>
+      <p>
+        Word and character limits show up everywhere: a tweet or post with a
+        hard character cap, a college essay with a word minimum, a meta
+        description for SEO capped around 155–160 characters, a resume
+        bullet point that reads better under a certain length, or a text
+        message that splits into multiple parts past 160 characters. Word
+        processors count differently depending on settings (some exclude
+        footnotes, headers, or captions), so a dedicated, transparent
+        counter is often more reliable when a limit actually matters.
+      </p>
+      <h2>How reading time is estimated</h2>
+      <p style="margin-bottom:0;">
+        This tool estimates reading time using 200 words per minute, a
+        commonly cited average adult silent-reading speed. It's an estimate,
+        not a guarantee — dense technical writing reads slower, and skimmable
+        prose reads faster, but 200 wpm is a reasonable middle-of-the-road
+        figure for general audiences and is the same rate used by most
+        publishing platforms that display a "X min read" estimate.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  function updateCounts(){
+    const text = document.getElementById('w-text').value;
+    const trimmed = text.trim();
+    const words = trimmed === '' ? 0 : trimmed.split(/\s+/).length;
+    const chars = text.length;
+    const charsNoSpaces = text.replace(/\s/g, '').length;
+    const sentences = trimmed === '' ? 0 : (trimmed.match(/[.!?]+(\s|$)/g) || []).length || (trimmed ? 1 : 0);
+    const paragraphs = trimmed === '' ? 0 : trimmed.split(/\n\s*\n/).filter(p => p.trim() !== '').length || (trimmed ? 1 : 0);
+    const minutes = words / 200;
+    let timeLabel;
+    if (words === 0) timeLabel = '0s';
+    else if (minutes < 1) timeLabel = Math.max(1, Math.round(minutes*60)) + 's';
+    else timeLabel = Math.round(minutes) + ' min';
+
+    document.getElementById('w-words').textContent = words;
+    document.getElementById('w-chars').textContent = chars;
+    document.getElementById('w-chars-ns').textContent = charsNoSpaces;
+    document.getElementById('w-sentences').textContent = sentences;
+    document.getElementById('w-paragraphs').textContent = paragraphs;
+    document.getElementById('w-time').textContent = timeLabel;
+  }
+  updateCounts();
+</script>
+</body>
+</html>

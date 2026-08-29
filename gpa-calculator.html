@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPA Calculator — Grade Point Average | Toolbench</title>
+<meta name="description" content="Calculate your grade point average from a list of course grades and credit hours.">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .gpa-row{ display:flex; gap:10px; margin-bottom:10px; align-items:center; }
+  .gpa-row select, .gpa-row input{
+    font-family:var(--mono); font-size:14px; padding:8px; border:1px solid var(--ink);
+    border-radius:2px; background:var(--paper); color:var(--ink);
+  }
+  .gpa-row .grade{ width:90px; }
+  .gpa-row .credits{ width:80px; }
+  .gpa-row button{
+    background:none; border:1px solid var(--ink-soft); color:var(--ink-soft);
+    border-radius:2px; cursor:pointer; padding:6px 10px; font-family:var(--mono); font-size:12px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>GPA calculator</h1>
+  <p class="tag">Grade point average from a list of course grades and credit hours, on the standard 4.0 scale.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html">Unit converter</a>
+  <a href="percentage-calculator.html">Percentage</a>
+  <a href="bmi-calculator.html">BMI</a>
+  <a href="loan-emi-calculator.html">Loan EMI</a>
+  <a href="compound-interest-calculator.html">Compound interest</a>
+  <a href="discount-calculator.html">Discount</a>
+  <a href="age-calculator.html">Age</a>
+  <a href="gpa-calculator.html" class="current">GPA</a>
+  <a href="word-counter.html">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <div id="gpa-rows"></div>
+    <button class="run" onclick="addRow()" style="margin-right:8px;">+ Add course</button>
+    <button class="run" onclick="runGPA()">Calculate GPA</button>
+    <div class="readout" id="g-out"></div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>How GPA is actually calculated</h2>
+      <p>
+        GPA weights each course's letter grade by how many credit hours the
+        course is worth, then averages across all courses — a 4-credit
+        course counts twice as much toward your GPA as a 2-credit course
+        with the same grade. Simply averaging the grade points without
+        weighting by credits gives a subtly wrong answer for anyone whose
+        courses aren't all the same size.
+      </p>
+      <h2>The standard 4.0 scale used here</h2>
+      <table>
+        <tr><th>Letter</th><th>Points</th></tr>
+        <tr><td>A</td><td>4.0</td></tr>
+        <tr><td>A-</td><td>3.7</td></tr>
+        <tr><td>B+</td><td>3.3</td></tr>
+        <tr><td>B</td><td>3.0</td></tr>
+        <tr><td>B-</td><td>2.7</td></tr>
+        <tr><td>C+</td><td>2.3</td></tr>
+        <tr><td>C</td><td>2.0</td></tr>
+        <tr><td>C-</td><td>1.7</td></tr>
+        <tr><td>D</td><td>1.0</td></tr>
+        <tr><td>F</td><td>0.0</td></tr>
+      </table>
+      <p style="margin-bottom:0;">
+        The formula: GPA = (sum of grade points × credit hours for each
+        course) ÷ (total credit hours). Some schools use a slightly
+        different scale (plus/minus grades worth different amounts, or a
+        5.0 scale for honors courses) — check your institution's own
+        scale if this doesn't match your transcript exactly.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  const GRADE_POINTS = {
+    'A':4.0, 'A-':3.7, 'B+':3.3, 'B':3.0, 'B-':2.7,
+    'C+':2.3, 'C':2.0, 'C-':1.7, 'D':1.0, 'F':0.0
+  };
+
+  function addRow(){
+    const container = document.getElementById('gpa-rows');
+    const row = document.createElement('div');
+    row.className = 'gpa-row';
+    const options = Object.keys(GRADE_POINTS).map(g => `<option value="${g}">${g}</option>`).join('');
+    row.innerHTML = `
+      <select class="grade">${options}</select>
+      <input type="number" class="credits" placeholder="Credits" value="3" min="0">
+      <button onclick="this.parentElement.remove()">Remove</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function runGPA(){
+    const rows = document.querySelectorAll('.gpa-row');
+    let totalPoints = 0, totalCredits = 0;
+    rows.forEach(row => {
+      const grade = row.querySelector('.grade').value;
+      const credits = parseFloat(row.querySelector('.credits').value) || 0;
+      totalPoints += (GRADE_POINTS[grade] || 0) * credits;
+      totalCredits += credits;
+    });
+    const gpa = totalCredits > 0 ? totalPoints / totalCredits : 0;
+    document.getElementById('g-out').innerHTML =
+      `<span class="label">GPA</span><br><span class="big">${gpa.toFixed(2)}</span> across ${totalCredits} credit hours`;
+  }
+
+  // Start with 3 rows by default
+  addRow(); addRow(); addRow();
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compound Interest Calculator — Savings Growth | Toolbench</title>
+<meta name="description" content="See how savings or investments grow with compound interest over time, including monthly contributions.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>Compound interest calculator</h1>
+  <p class="tag">How a savings or investment balance grows over time with regular compounding.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html">Unit converter</a>
+  <a href="percentage-calculator.html">Percentage</a>
+  <a href="bmi-calculator.html">BMI</a>
+  <a href="loan-emi-calculator.html">Loan EMI</a>
+  <a href="compound-interest-calculator.html" class="current">Compound interest</a>
+  <a href="discount-calculator.html">Discount</a>
+  <a href="age-calculator.html">Age</a>
+  <a href="gpa-calculator.html">GPA</a>
+  <a href="word-counter.html">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="c-p">Starting amount</label>
+        <input id="c-p" type="number" value="1000">
+      </div>
+      <div class="field">
+        <label for="c-m">Monthly contribution</label>
+        <input id="c-m" type="number" value="100">
+      </div>
+      <div class="field">
+        <label for="c-r">Annual rate (%)</label>
+        <input id="c-r" type="number" value="7">
+      </div>
+      <div class="field">
+        <label for="c-y">Years</label>
+        <input id="c-y" type="number" value="10">
+      </div>
+      <button class="run" onclick="runCompound()">Calculate</button>
+    </div>
+    <div class="readout" id="c-out"></div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>Why compound interest grows faster than it seems</h2>
+      <p>
+        Simple interest pays you the same amount every period, based only on
+        your original balance. Compound interest pays you interest on your
+        interest — each period's earnings get added to the balance, and the
+        next period's interest is calculated on that larger number. Over
+        short periods the difference looks small; over years or decades it
+        becomes the entire reason long-term investing works the way it does.
+        Albert Einstein is often (probably apocryphally) credited with
+        calling compound interest one of the most powerful forces in
+        finance, and the underlying math backs up the sentiment even if the
+        quote itself is disputed.
+      </p>
+      <h2>The formula, with monthly contributions</h2>
+      <p>
+        This calculator compounds monthly and adds your monthly contribution
+        at the end of each month, which is how most real savings accounts
+        and retirement contributions actually work:
+      </p>
+      <p>Balance after each month = (previous balance + contribution) × (1 + monthly rate)</p>
+      <h2>What matters most: rate, time, or contribution size?</h2>
+      <p style="margin-bottom:0;">
+        Time tends to matter more than most people expect — a smaller
+        amount invested for twice as long can end up ahead of a larger
+        amount invested for half the time, purely because compounding needs
+        time to do its work. That's the core argument for starting early
+        even with small amounts, rather than waiting to have a "meaningful"
+        sum to invest. This calculator assumes a constant rate of return for
+        simplicity — real markets fluctuate year to year, so treat the
+        result as a rough long-term estimate, not a guarantee.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  function runCompound(){
+    const p = parseFloat(document.getElementById('c-p').value) || 0;
+    const m = parseFloat(document.getElementById('c-m').value) || 0;
+    const rAnnual = parseFloat(document.getElementById('c-r').value) || 0;
+    const years = parseFloat(document.getElementById('c-y').value) || 0;
+    const r = rAnnual / 100 / 12;
+    const months = years * 12;
+    let balance = p;
+    let contributed = p;
+    for(let i=0; i<months; i++){
+      balance = (balance + m) * (1 + r);
+      contributed += m;
+    }
+    const growth = balance - contributed;
+    document.getElementById('c-out').innerHTML =
+      `<span class="label">Final balance</span><br><span class="big">${balance.toFixed(2)}</span>`+
+      `<br><br><span class="label">Total contributed</span><br>${contributed.toFixed(2)}`+
+      `<br><span class="label">Growth from interest</span><br>${growth.toFixed(2)}`;
+  }
+</script>
+</body>
+</html>

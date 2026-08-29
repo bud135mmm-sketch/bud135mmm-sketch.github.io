@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit Converter — km/miles, kg/lb, °C/°F | Toolbench</title>
+<meta name="description" content="Convert kilometers to miles, kilograms to pounds, and Celsius to Fahrenheit instantly in your browser.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site">
+  <p class="back"><a href="index.html">&larr; All tools</a></p>
+  <h1>Unit converter</h1>
+  <p class="tag">Length, weight, and temperature — both directions, updated instantly as you type.</p>
+</header>
+
+<nav class="toolnav">
+  <a href="unit-converter.html" class="current">Unit converter</a>
+  <a href="percentage-calculator.html">Percentage</a>
+  <a href="bmi-calculator.html">BMI</a>
+  <a href="loan-emi-calculator.html">Loan EMI</a>
+  <a href="compound-interest-calculator.html">Compound interest</a>
+  <a href="discount-calculator.html">Discount</a>
+  <a href="age-calculator.html">Age</a>
+  <a href="gpa-calculator.html">GPA</a>
+  <a href="word-counter.html">Word counter</a>
+  <a href="password-generator.html">Password generator</a>
+</nav>
+
+<main>
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="u-value">Value</label>
+        <input id="u-value" type="number" value="1">
+      </div>
+      <div class="field">
+        <label for="u-type">Conversion</label>
+        <select id="u-type">
+          <option value="km-mi">Kilometers → Miles</option>
+          <option value="mi-km">Miles → Kilometers</option>
+          <option value="kg-lb">Kilograms → Pounds</option>
+          <option value="lb-kg">Pounds → Kilograms</option>
+          <option value="c-f">Celsius → Fahrenheit</option>
+          <option value="f-c">Fahrenheit → Celsius</option>
+        </select>
+      </div>
+      <button class="run" onclick="runUnit()">Convert</button>
+    </div>
+    <div class="readout" id="u-out"></div>
+  </div>
+
+  <div class="panel">
+    <article>
+      <h2>Why these units still trip people up</h2>
+      <p>
+        Most of the world uses the metric system (kilometers, kilograms,
+        Celsius), while the United States primarily uses imperial units
+        (miles, pounds, Fahrenheit). That split shows up constantly — a
+        recipe from a UK site listing grams, a US road sign in miles, a
+        fitness app logging weight in pounds when your scale reads
+        kilograms. None of the conversions are complicated math, but doing
+        them in your head reliably is harder than it looks, especially with
+        temperature, since Celsius and Fahrenheit don't share a zero point.
+      </p>
+      <h2>The formulas behind each conversion</h2>
+      <table>
+        <tr><th>Conversion</th><th>Formula</th></tr>
+        <tr><td>Kilometers → Miles</td><td>km × 0.621371</td></tr>
+        <tr><td>Miles → Kilometers</td><td>mi × 1.60934</td></tr>
+        <tr><td>Kilograms → Pounds</td><td>kg × 2.20462</td></tr>
+        <tr><td>Pounds → Kilograms</td><td>lb × 0.453592</td></tr>
+        <tr><td>Celsius → Fahrenheit</td><td>(°C × 9/5) + 32</td></tr>
+        <tr><td>Fahrenheit → Celsius</td><td>(°F − 32) × 5/9</td></tr>
+      </table>
+      <p style="margin-bottom:0;">
+        A quick sanity check for temperature: 0°C is 32°F (freezing), and
+        100°C is 212°F (boiling water at sea level) — useful reference
+        points if you ever need to estimate without a calculator at all.
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  Toolbench — free calculators and converters. <a href="privacy.html" style="color:var(--ink-soft);">Privacy Policy</a>
+</footer>
+
+<script>
+  function runUnit(){
+    const v = parseFloat(document.getElementById('u-value').value) || 0;
+    const t = document.getElementById('u-type').value;
+    let out, label;
+    switch(t){
+      case 'km-mi': out = v * 0.621371; label = 'miles'; break;
+      case 'mi-km': out = v * 1.60934; label = 'kilometers'; break;
+      case 'kg-lb': out = v * 2.20462; label = 'pounds'; break;
+      case 'lb-kg': out = v * 0.453592; label = 'kilograms'; break;
+      case 'c-f': out = v * 9/5 + 32; label = '°F'; break;
+      case 'f-c': out = (v - 32) * 5/9; label = '°C'; break;
+    }
+    document.getElementById('u-out').innerHTML =
+      `<span class="label">Result</span><br><span class="big">${out.toFixed(2)}</span> ${label}`;
+  }
+</script>
+</body>
+</html>
